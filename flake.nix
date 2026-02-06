@@ -13,8 +13,8 @@
 
     nixosConfigurations.chrultrabook-homelab = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [ ./hosts/chrultrabook-homelab/configuration.nix ]
-    }
+        modules = [ ./hosts/chrultrabook-homelab/configuration.nix ];
+    };
 
   };
 }
