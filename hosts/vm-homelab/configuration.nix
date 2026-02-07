@@ -104,16 +104,7 @@
     "root"
     "gege"
   ];
-
-  fileSystems."/mnt/Storage" = {
-    device = "/dev/disk/by-uuid/df91cac8-2369-4a2e-a1a4-f06b82dc8db2";
-    fsType = " ext4";
-    options = [
-      "defaults"
-      "relatime"
-    ];
-  };
-  services.homelab.storage = "/mnt/Storage";
+  services.homelab.storage = "/home/gege/Storage";
 
   # Cria o diretório do socket no host com as permissões corretas
   systemd.tmpfiles.rules = [
@@ -121,5 +112,5 @@
   ];
 
   # Define o caminho do socket para o módulo de containers
-  services.homelab.socketPath = "/run/user/1000/brokerbot";
+  services.homelab.brokerbotSocket = "/run/user/1000/brokerbot";
 }
