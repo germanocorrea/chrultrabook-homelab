@@ -96,23 +96,23 @@ in
           ];
         };
 
-        brokerbot = {
-          autoStart = true;
-          image = "brokerbot:latest";
-          imageStream = brokerBotImage;
-          environment = {
-            NGROK_AUTHTOKEN = "**REDACTED**";
-          };
-          volumes = [ "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}" ];
-          cmd = [
-            "-ngrok"
-            "-token=**REDACTED**"
-            "-password=**REDACTED**"
-            "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
-            "-webhook-secret-token=**REDACTED**"
-          ];
-          extraOptions = [ "--userns=keep-id:uid=1000,gid=1000" ];
-        };
+        # brokerbot = {
+        #   autoStart = true;
+        #   image = "brokerbot:latest";
+        #   imageStream = brokerBotImage;
+        #   environment = {
+        #     NGROK_AUTHTOKEN = "**REDACTED**";
+        #   };
+        #   volumes = [ "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}" ];
+        #   cmd = [
+        #     "-ngrok"
+        #     "-token=**REDACTED**"
+        #     "-password=**REDACTED**"
+        #     "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
+        #     "-webhook-secret-token=**REDACTED**"
+        #   ];
+        #   extraOptions = [ "--userns=keep-id:uid=1000,gid=1000" ];
+        # };
 
         # connectiontester = {
         #   image = "connectiontester:latest";
@@ -202,7 +202,7 @@ in
           volumes = [
             "${toString cfg.storage}/Media/torrents:/data/torrents"
             "qbittorrent-config:/config"
-            "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
+            # "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
             "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
           ];
           extraOptions = [
