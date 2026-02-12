@@ -103,7 +103,7 @@ in
 
         connectiontester = {
           image = "connectiontester:latest";
-          imageStream = brokerBotImage;
+          imageStream = connectiontesterImage;
           volumes = [ "${toString cfg.socketPath}:${toString cfg.socketPath}" ];
           cmd = [
             "-socket=${toString cfg.socketPath}brokerbot.sock"
