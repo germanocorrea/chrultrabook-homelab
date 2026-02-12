@@ -109,6 +109,12 @@
   # Cria o diretório do socket no host com as permissões corretas
   systemd.tmpfiles.rules = [
     "d /run/user/1000/brokerbot 0755 gege users - -"
+    "d /home/gege/Storage 0755 gege users - -"
+    "d /home/gege/Storage/Media 0755 gege users - -"
+    "d /home/gege/Storage/Media/torrents 0755 gege users - -"
+    "d /home/gege/Storage/socket-sender 0755 gege users - -"
+    "d /home/gege/.config/brokerbot/ 0755 gege users - -"
+    "f /home/gege/Storage/prestart-brokerbot.sh 0755 gege users - -"
   ];
 
   # Define o caminho do socket para o módulo de containers

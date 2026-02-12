@@ -40,7 +40,13 @@ in
   };
 
   config = {
+    environment.systemPackages = with pkgs; [
+      dive
+      podman-tui
+      podman-compose
+    ];
     virtualisation = {
+      containers.enable = true;
       podman = {
         enable = true;
         dockerCompat = true;
@@ -50,6 +56,7 @@ in
       oci-containers.backend = "podman";
       oci-containers.containers = {
         sonarr = {
+          autoStart = true;
           image = "lscr.io/linuxserver/sonarr:latest";
           ports = [ "8989:8989/tcp" ];
           environment = {
@@ -69,6 +76,7 @@ in
         };
 
         bazarr = {
+          autoStart = true;
           image = "lscr.io/linuxserver/bazarr:latest";
           ports = [ "6767:6767/tcp" ];
           environment = {
@@ -89,6 +97,7 @@ in
         };
 
         brokerbot = {
+          autoStart = true;
           image = "brokerbot:latest";
           imageStream = brokerBotImage;
           environment = {
@@ -118,6 +127,7 @@ in
         # };
 
         flaresolverr = {
+          autoStart = true;
           image = "ghcr.io/flaresolverr/flaresolverr:latest";
           ports = [ "8191:8191/tcp" ];
           environment = {
@@ -130,6 +140,7 @@ in
         };
 
         jellyfin = {
+          autoStart = true;
           image = "docker.io/jellyfin/jellyfin:latest";
           ports = [ "8096:8096/tcp" ];
           volumes = [
@@ -144,6 +155,7 @@ in
         };
 
         jellyseerr = {
+          autoStart = true;
           image = "docker.io/fallenbagel/jellyseerr";
           ports = [ "5055:5055/tcp" ];
           environment = {
@@ -155,6 +167,7 @@ in
         };
 
         prowlarr = {
+          autoStart = true;
           image = "lscr.io/linuxserver/prowlarr:latest";
           ports = [ "9696:9696/tcp" ];
           environment = {
@@ -171,6 +184,7 @@ in
         };
 
         qbittorrent = {
+          autoStart = true;
           image = "lscr.io/linuxserver/qbittorrent:latest";
           ports = [
             "8080:8080/tcp"
