@@ -9,6 +9,23 @@ with lib;
 
 let
   cfg = config.services.homelab;
+  brokerBotImage = pkgs.dockerTools.buildImage {
+    name = "brokerbot";
+    tag = "latest";
+    # copyToRoot = [ pkgs.myBrokerBotPackage ];
+    config = {
+      Cmd = [ "brokerbot" ];
+      WorkingDir = "/";
+    };
+  };
+  connectiontesterImage = pkgs.dockerTools.buildImage {
+    name = "connectiontester";
+    tag = "latest";
+    config = {
+      Cmd = [ "connectiontester" ];
+      WorkingDir = "/";
+    };
+  };
 in
 {
   options.services.homelab = {
@@ -68,7 +85,8 @@ in
         };
 
         brokerbot = {
-          image = "localhost/brokerbot:latest";
+          image = "brokerbot:latest";
+          imageStream = brokerBotImage;
           environment = {
             NGROK_AUTHTOKEN = "**REDACTED**";
           };
@@ -84,7 +102,8 @@ in
         };
 
         connectiontester = {
-          image = "localhost/connectiontester:latest";
+          image = "connectiontester:latest";
+          imageStream = brokerBotImage;
           volumes = [ "${toString cfg.socketPath}:${toString cfg.socketPath}" ];
           cmd = [
             "-socket=${toString cfg.socketPath}brokerbot.sock"
