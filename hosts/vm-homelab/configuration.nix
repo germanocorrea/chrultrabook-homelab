@@ -59,6 +59,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "gege"
     ];
     packages = with pkgs; [ ];
   };
