@@ -71,7 +71,7 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id"
+            "--userns=keep-id:uid=1000,gid=1000"
           ];
         };
 
@@ -92,7 +92,7 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id"
+            "--userns=keep-id:uid=1000,gid=1000"
           ];
         };
 
@@ -111,7 +111,7 @@ in
             "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
             "-webhook-secret-token=**REDACTED**"
           ];
-          extraOptions = [ "--userns=keep-id" ];
+          extraOptions = [ "--userns=keep-id:uid=1000,gid=1000" ];
         };
 
         # connectiontester = {
@@ -135,7 +135,7 @@ in
           };
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id"
+            "--userns=keep-id:uid=1000,gid=1000"
           ];
         };
 
@@ -150,7 +150,7 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id"
+            "--userns=keep-id:uid=1000,gid=1000"
           ];
         };
 
@@ -179,7 +179,7 @@ in
           volumes = [ "prowlarr-config:/config" ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id"
+            "--userns=keep-id:uid=1000,gid=1000"
           ];
         };
 
@@ -207,7 +207,7 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id"
+            "--userns=keep-id:uid=1000,gid=1000"
           ];
         };
       };
