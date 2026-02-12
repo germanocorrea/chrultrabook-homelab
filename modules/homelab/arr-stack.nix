@@ -18,20 +18,24 @@ let
       WorkingDir = "/";
     };
   };
-  connectiontesterImage = pkgs.dockerTools.buildImage {
-    name = "connectiontester";
-    tag = "latest";
-    config = {
-      Cmd = [ "connectiontester" ];
-      WorkingDir = "/";
-    };
-  };
+  # connectiontesterImage = pkgs.dockerTools.buildImage {
+  #   name = "connectiontester";
+  #   tag = "latest";
+  #   config = {
+  #     Cmd = [ "connectiontester" ];
+  #     WorkingDir = "/";
+  #   };
+  # };
 in
 {
   options.services.homelab = {
     storage = mkOption {
       type = types.path;
       description = "Default storage for all bind mounts";
+    };
+    brokerbotSocket = mkOption {
+      type = types.path;
+      description = "Default path of brokerbot socket";
     };
   };
 
@@ -90,28 +94,28 @@ in
           environment = {
             NGROK_AUTHTOKEN = "**REDACTED**";
           };
-          volumes = [ "${toString cfg.socketPath}:${toString cfg.socketPath}" ];
+          volumes = [ "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}" ];
           cmd = [
             "-ngrok"
             "-token=**REDACTED**"
             "-password=**REDACTED**"
-            "-socket=${toString cfg.socketPath}brokerbot.sock"
+            "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
             "-webhook-secret-token=**REDACTED**"
           ];
           extraOptions = [ "--userns=keep-id" ];
         };
 
-        connectiontester = {
-          image = "connectiontester:latest";
-          imageStream = connectiontesterImage;
-          volumes = [ "${toString cfg.socketPath}:${toString cfg.socketPath}" ];
-          cmd = [
-            "-socket=${toString cfg.socketPath}brokerbot.sock"
-            "-address=google.com:80"
-          ];
-          extraOptions = [ "--userns=keep-id" ];
-          dependsOn = [ "brokerbot" ];
-        };
+        # connectiontester = {
+        #   image = "connectiontester:latest";
+        #   imageStream = connectiontesterImage;
+        #   volumes = [ "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}" ];
+        #   cmd = [
+        #     "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
+        #     "-address=google.com:80"
+        #   ];
+        #   extraOptions = [ "--userns=keep-id" ];
+        #   dependsOn = [ "brokerbot" ];
+        # };
 
         flaresolverr = {
           image = "ghcr.io/flaresolverr/flaresolverr:latest";
@@ -184,7 +188,7 @@ in
           volumes = [
             "${toString cfg.storage}/Media/torrents:/data/torrents"
             "qbittorrent-config:/config"
-            "${toString cfg.socketPath}:${toString cfg.socketPath}"
+            "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
             "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
           ];
           extraOptions = [

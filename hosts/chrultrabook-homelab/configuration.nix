@@ -107,13 +107,15 @@
       "relatime"
     ];
   };
-  services.homelab.storage = "/mnt/Storage";
+  services.homelab = {
+    storage = "/mnt/Storage";
+    # Define o caminho do socket para o módulo de containers
+    brokerbotSocket = "/run/user/1000/brokerbot";
+
+  };
 
   # Cria o diretório do socket no host com as permissões corretas
   systemd.tmpfiles.rules = [
     "d /run/user/1000/brokerbot 0755 gege users - -"
   ];
-
-  # Define o caminho do socket para o módulo de containers
-  services.homelab.socketPath = "/run/user/1000/brokerbot";
 }
