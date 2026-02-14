@@ -7,6 +7,28 @@
 
 let
   cfg = config.services.homelab.migration;
+
+  # Obtém todos os containers definidos em oci-containers
+  allContainers = config.virtualisation.oci-containers.containers;
+
+  # Função para extrair volumes nomeados de um container
+  getNamedVolumes =
+    container:
+    let
+      volumeNames = map (v: lib.head (lib.splitString ":" v)) container.volumes or [ ];
+    in
+    lib.filter (v: !lib.hasPrefix "/" v && !lib.hasPrefix "." v) volumeNames;
+
+  volumeToContainerMap = lib.flatten (
+    lib.mapAttrsToList (
+      containerName: container:
+      map (volumeName: {
+        volume = volumeName;
+        container = containerName;
+      }) (getNamedVolumes container)
+    ) allContainers
+  );
+
 in
 {
   options.services.homelab.migration = {
@@ -24,24 +46,19 @@ in
   };
 
   config = lib.mkIf cfg.enableRestore {
-    systemd.services =
-      let
-        volumes = [
-          "bazarr-config"
-          "jellyseer-config"
-          "qbittorrent-config"
-          "radarr-config"
-          "sonarr-config"
-          "prowlarr-config"
-        ];
-      in
-      lib.listToAttrs (
-        map (name: {
+    systemd.services = lib.listToAttrs (
+      map (
+        mapping:
+        let
+          name = mapping.volume;
+          containerName = mapping.container;
+        in
+        {
           name = "seed-volume-${name}";
           value = {
-            description = "Restore volume ${name}";
+            description = "Restore volume ${name} for container ${containerName}";
             wantedBy = [ "multi-user.target" ];
-            before = [ "podman-${name}.service" ];
+            before = [ "podman-${containerName}.service" ];
             script = ''
               ${pkgs.podman}/bin/podman volume create ${name} || true
               MOUNTPOINT=$(${pkgs.podman}/bin/podman volume inspect ${name} --format '{{.Mountpoint}}')
@@ -49,12 +66,21 @@ in
               # Se forceOverwrite for true OU o volume estiver vazio, restaura.
               if ${if cfg.forceOverwrite then "true" else "[ -z \"$(ls -A $MOUNTPOINT)\" ]"}; then
                 echo "Restaurando volume ${name}..."
-                ${pkgs.podman}/bin/podman volume import ${name} ${cfg.backupPath}/${name}.tar
+                if [ -f "${cfg.backupPath}/${name}.tar" ]; then
+                  ${pkgs.podman}/bin/podman volume import ${name} "${cfg.backupPath}/${name}.tar"
+                  
+                  # Garante que as permissões estão corretas para o usuário 1000:100 (gege:users no NixOS)
+                  echo "Ajustando permissões para 1000:100 em $MOUNTPOINT"
+                  chown -R 1000:100 "$MOUNTPOINT"
+                else
+                  echo "Aviso: Arquivo de backup ${cfg.backupPath}/${name}.tar não encontrado. Pulando restauração."
+                fi
               fi
             '';
             serviceConfig.Type = "oneshot";
           };
-        }) volumes
-      );
+        }
+      ) volumeToContainerMap
+    );
   };
 }

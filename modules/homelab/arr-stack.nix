@@ -61,7 +61,7 @@ in
           ports = [ "8989:8989/tcp" ];
           environment = {
             PUID = "1000";
-            PGID = "1000";
+            PGID = "100";
             UMASK = "002";
             TZ = "America/Sao_Paulo";
           };
@@ -81,7 +81,7 @@ in
           ports = [ "6767:6767/tcp" ];
           environment = {
             PUID = "1000";
-            PGID = "1000";
+            PGID = "100";
             UMASK = "002";
             TZ = "America/Sao_Paulo";
             WEBUI_PORTS = "6767/tcp,6767/udp";
@@ -172,7 +172,7 @@ in
           ports = [ "9696:9696/tcp" ];
           environment = {
             PUID = "1000";
-            PGID = "1000";
+            PGID = "100";
             UMASK = "002";
             TZ = "America/Sao_Paulo";
           };
@@ -193,7 +193,7 @@ in
           ];
           environment = {
             PUID = "1000";
-            PGID = "1000";
+            PGID = "100";
             UMASK = "022";
             TZ = "America/Sao_Paulo";
             WEBUI_PORT = "8080";
