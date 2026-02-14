@@ -75,8 +75,8 @@ in
 
               # Garante as permissões SEMPRE, mesmo que a restauração não tenha ocorrido agora
               # Isso corrige volumes que foram criados/restaurados com permissões erradas anteriormente
-              echo "Garantindo permissões 1000:100 em $MOUNTPOINT"
-              chown -R 1000:100 "$MOUNTPOINT"
+              echo "Garantindo permissões ${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid} em $MOUNTPOINT"
+              chown -R ${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid} "$MOUNTPOINT"
             '';
             serviceConfig.Type = "oneshot";
           };

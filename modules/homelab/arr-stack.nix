@@ -60,8 +60,8 @@ in
           image = "lscr.io/linuxserver/sonarr:latest";
           ports = [ "8989:8989/tcp" ];
           environment = {
-            PUID = "1000";
-            PGID = "100";
+            PUID = toString config.users.users.gege.uid;
+            PGID = toString config.users.groups.users.gid;
             UMASK = "002";
             TZ = "America/Sao_Paulo";
           };
@@ -71,7 +71,7 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=1000,gid=1000"
+            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -80,8 +80,8 @@ in
           image = "lscr.io/linuxserver/bazarr:latest";
           ports = [ "6767:6767/tcp" ];
           environment = {
-            PUID = "1000";
-            PGID = "100";
+            PUID = toString config.users.users.gege.uid;
+            PGID = toString config.users.groups.users.gid;
             UMASK = "002";
             TZ = "America/Sao_Paulo";
             WEBUI_PORTS = "6767/tcp,6767/udp";
@@ -92,7 +92,7 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=1000,gid=1000"
+            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -144,9 +144,8 @@ in
           image = "docker.io/jellyfin/jellyfin:latest";
           ports = [ "8096:8096/tcp" ];
           environment = {
-            # O Jellyfin oficial não usa PUID/PGID, mas vamos deixar por precaução
-            PUID = "1000";
-            PGID = "100";
+            PUID = toString config.users.users.gege.uid;
+            PGID = toString config.users.groups.users.gid;
           };
           volumes = [
             "jellyfin-config:/config:Z"
@@ -155,8 +154,8 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=1000,gid=1000"
-            "--user=1000:100"
+            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
+            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
             "--no-healthcheck"
           ];
         };
@@ -168,8 +167,8 @@ in
           environment = {
             TZ = "America/Sao_Paulo";
             PORT = "5055";
-            PUID = "1000";
-            PGID = "100";
+            PUID = toString config.users.users.gege.uid;
+            PGID = toString config.users.groups.users.gid;
           };
           volumes = [ "jellyseer-config:/app/config" ];
           extraOptions = [ "--network=media-download.network" ];
@@ -180,15 +179,15 @@ in
           image = "lscr.io/linuxserver/prowlarr:latest";
           ports = [ "9696:9696/tcp" ];
           environment = {
-            PUID = "1000";
-            PGID = "100";
+            PUID = toString config.users.users.gege.uid;
+            PGID = toString config.users.groups.users.gid;
             UMASK = "002";
             TZ = "America/Sao_Paulo";
           };
           volumes = [ "prowlarr-config:/config" ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=1000,gid=1000"
+            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -201,8 +200,8 @@ in
             "6881:6881/udp"
           ];
           environment = {
-            PUID = "1000";
-            PGID = "100";
+            PUID = toString config.users.users.gege.uid;
+            PGID = toString config.users.groups.users.gid;
             UMASK = "022";
             TZ = "America/Sao_Paulo";
             WEBUI_PORT = "8080";
@@ -216,7 +215,7 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=1000,gid=1000"
+            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
           ];
         };
       };
