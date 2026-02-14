@@ -1,4 +1,16 @@
 { config, pkgs, ... }:
+let
+  cloudflareToken = "**REDACTED**";
+  virtualHostConfig = port:
+  {
+    extraConfig = ''
+        tls {
+          dns cloudflare "**REDACTED**"
+        }
+        reverse_proxy localhost:${port}
+      '';
+  };
+in
 {
   # ... outras configurações
 
@@ -24,12 +36,21 @@
       hash = "sha256-bJO2RIa6hYsoVl3y2L86EM34Dfkm2tlcEsXn2+COgzo=";
     };
 
-    virtualHosts."jellyfin.gege.xyz.br".extraConfig = ''
-      tls {
-        dns cloudflare "**REDACTED**"
-      }
-      # Aponta para a porta do Jellyfin definida no seu módulo arr-stack.nix
-      reverse_proxy localhost:8096
-    '';
+    virtualHosts = {
+      "sonarr.gege.xyz.br" = (virtualHostConfig "8989");
+      "bazarr.gege.xyz.br" = (virtualHostConfig "6767");
+      "flaresolverr.gege.xyz.br" = (virtualHostConfig "8191");
+      "jellyfin.gege.xyz.br" = (virtualHostConfig "8096");
+      "jellyseer.gege.xyz.br" = (virtualHostConfig "5055");
+      "prowlarr.gege.xyz.br" = (virtualHostConfig "9696");
+      "torrent.gege.xyz.br" = (virtualHostConfig "8080");
+    };
+    # virtualHosts."jellyfin.gege.xyz.br".extraConfig = ''
+    #   tls {
+    #     dns cloudflare "${cloudflareToken}"
+    #   }
+    #   # Aponta para a porta do Jellyfin definida no seu módulo arr-stack.nix
+    #   reverse_proxy localhost:8096
+    # '';
   };
 }
