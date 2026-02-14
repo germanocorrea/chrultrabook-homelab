@@ -27,6 +27,7 @@
             ./hosts/vm-homelab/configuration.nix
             ./modules/homelab/arr-stack.nix
             ./modules/homelab/volume-seeder.nix
+            ./modules/homelab/tailscale.nix
             {
               services.homelab.migration.enableRestore =
                 if (builtins.getEnv "MIGRATE") == "1" then true else false;
