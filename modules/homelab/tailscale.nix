@@ -4,7 +4,7 @@
 
   # Habilita o serviço do Tailscale
   services.tailscale.enable = true;
-  services.homelab.cloudflareDnsToken = "**REDACTED**";
+  # services.homelab.cloudflareDnsToken = "**REDACTED**";
 
   # Pacotes necessários
   environment.systemPackages = with pkgs; [
@@ -26,7 +26,7 @@
 
     virtualHosts."jellyfin.gege.xyz.br".extraConfig = ''
       tls {
-        dns cloudflare "${config.services.homelab.cloudflareDnsToken}"
+        dns cloudflare "**REDACTED**"
       }
       # Aponta para a porta do Jellyfin definida no seu módulo arr-stack.nix
       reverse_proxy localhost:8096
