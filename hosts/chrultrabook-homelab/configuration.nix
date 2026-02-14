@@ -73,10 +73,6 @@
   services.homelab = {
     storage = "/mnt/Storage";
     brokerbotSocket = "/run/user/1000/brokerbot";
-
   };
 
-  systemd.tmpfiles.rules = [
-    "d /run/user/1000/brokerbot 0755 gege users - -"
-  ];
 }

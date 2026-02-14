@@ -43,11 +43,11 @@ in
     systemd.tmpfiles.rules = [
       "d /run/user/1000/brokerbot 0755 gege users - -"
       "d /home/gege/.config/brokerbot/ 0755 gege users - -"
-      "d ${config.services.homelab.storage} 0755 gege users - -"
-      "d ${config.services.homelab.storage}/Media 0755 gege users - -"
-      "d ${config.services.homelab.storage}/Media/torrents 0755 gege users - -"
-      "d ${config.services.homelab.storage}/socket-sender 0755 gege users - -"
-      "f ${config.services.homelab.storage}/prestart-brokerbot.sh 0755 gege users - -"
+      "d ${toString cfg.storage} 0755 gege users - -"
+      "d ${toString cfg.storage}/Media 0755 gege users - -"
+      "d ${toString cfg.storage}/Media/torrents 0755 gege users - -"
+      "d ${toString cfg.storage}/socket-sender 0755 gege users - -"
+      "f ${toString cfg.storage}/prestart-brokerbot.sh 0755 gege users - -"
     ];
     environment.systemPackages = with pkgs; [
       dive
@@ -55,7 +55,15 @@ in
       podman-compose
     ];
     virtualisation = {
-      containers.enable = true;
+      containers = {
+        enable = true;
+        storage.settings = {
+          storage = {
+            driver = "overlay";
+            graphroot = "${toString cfg.storage}/container-images";
+          };
+        };
+      };
       podman = {
         enable = true;
         dockerCompat = true;
