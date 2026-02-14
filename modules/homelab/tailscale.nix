@@ -20,8 +20,8 @@
     enable = true;
     # Usamos o pacote com suporte a DNS Cloudflare
     package = pkgs.caddy.withPlugins {
-      plugins = [ "github.com/caddy-dns/cloudflare" ];
-      hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX="; # O Nix avisará o hash correto se estiver errado
+      plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
+      hash = "sha256-bJO2RIa6hYsoVl3y2L86EM34Dfkm2tlcEsXn2+COgzo=";
     };
 
     virtualHosts."jellyfin.gege.xyz.br".extraConfig = ''
