@@ -68,14 +68,15 @@ in
                 echo "Restaurando volume ${name}..."
                 if [ -f "${cfg.backupPath}/${name}.tar" ]; then
                   ${pkgs.podman}/bin/podman volume import ${name} "${cfg.backupPath}/${name}.tar"
-                  
-                  # Garante que as permissões estão corretas para o usuário 1000:100 (gege:users no NixOS)
-                  echo "Ajustando permissões para 1000:100 em $MOUNTPOINT"
-                  chown -R 1000:100 "$MOUNTPOINT"
                 else
                   echo "Aviso: Arquivo de backup ${cfg.backupPath}/${name}.tar não encontrado. Pulando restauração."
                 fi
               fi
+
+              # Garante as permissões SEMPRE, mesmo que a restauração não tenha ocorrido agora
+              # Isso corrige volumes que foram criados/restaurados com permissões erradas anteriormente
+              echo "Garantindo permissões 1000:100 em $MOUNTPOINT"
+              chown -R 1000:100 "$MOUNTPOINT"
             '';
             serviceConfig.Type = "oneshot";
           };

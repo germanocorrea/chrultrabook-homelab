@@ -143,6 +143,11 @@ in
           autoStart = true;
           image = "docker.io/jellyfin/jellyfin:latest";
           ports = [ "8096:8096/tcp" ];
+          environment = {
+            # O Jellyfin oficial não usa PUID/PGID, mas vamos deixar por precaução
+            PUID = "1000";
+            PGID = "100";
+          };
           volumes = [
             "jellyfin-config:/config:Z"
             "jellyfin-cache:/cache:Z"
@@ -151,6 +156,8 @@ in
           extraOptions = [
             "--network=media-download.network"
             "--userns=keep-id:uid=1000,gid=1000"
+            "--user=1000:100"
+            "--no-healthcheck"
           ];
         };
 
@@ -161,6 +168,8 @@ in
           environment = {
             TZ = "America/Sao_Paulo";
             PORT = "5055";
+            PUID = "1000";
+            PGID = "100";
           };
           volumes = [ "jellyseer-config:/app/config" ];
           extraOptions = [ "--network=media-download.network" ];
