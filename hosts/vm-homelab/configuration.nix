@@ -55,11 +55,11 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.gege = {
     isNormalUser = true;
+    uid = 1000;
     description = "gege";
     extraGroups = [
       "networkmanager"
       "wheel"
-      "gege"
     ];
     packages = with pkgs; [ ];
   };
