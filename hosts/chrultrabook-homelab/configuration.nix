@@ -39,6 +39,7 @@
 
   users.users.gege = {
     isNormalUser = true;
+    uid = 1000;
     home = "/home/gege";
     description = "gege";
     extraGroups = [
