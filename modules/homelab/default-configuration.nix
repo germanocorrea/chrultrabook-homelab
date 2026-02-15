@@ -1,5 +1,14 @@
+{ lib, ... }:
 {
-  services.cockpit.enable = true;
+  services.cockpit = {
+    enable = true;
+    settings = {
+      WebService = {
+        Origins = lib.mkForce "https://cockpit.gege.xyz.br http://localhost:9090";
+        ProtocolHeader = "X-Forwarded-Proto";
+      };
+    };
+  };
   imports = [
     ./arr-stack.nix
     ./volume-seeder.nix
