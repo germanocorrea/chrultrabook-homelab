@@ -9,15 +9,15 @@ with lib;
 
 let
   cfg = config.services.homelab;
-  brokerBotImage = pkgs.dockerTools.buildImage {
-    name = "brokerbot";
-    tag = "latest";
-    # copyToRoot = [ pkgs.myBrokerBotPackage ];
-    config = {
-      Cmd = [ "brokerbot" ];
-      WorkingDir = "/";
-    };
-  };
+  # brokerBotImage = pkgs.dockerTools.buildImage {
+  #   name = "brokerbot";
+  #   tag = "latest";
+  #   # copyToRoot = [ pkgs.myBrokerBotPackage ];
+  #   config = {
+  #     Cmd = [ "brokerbot" ];
+  #     WorkingDir = "/";
+  #   };
+  # };
   # connectiontesterImage = pkgs.dockerTools.buildImage {
   #   name = "connectiontester";
   #   tag = "latest";
@@ -33,21 +33,21 @@ in
       type = types.path;
       description = "Default storage for all bind mounts";
     };
-    brokerbotSocket = mkOption {
-      type = types.path;
-      description = "Default path of brokerbot socket";
-    };
+    # brokerbotSocket = mkOption {
+    #   type = types.path;
+    #   description = "Default path of brokerbot socket";
+    # };
   };
 
   config = {
     systemd.tmpfiles.rules = [
-      "d /run/user/1000/brokerbot 0755 gege users - -"
-      "d /home/gege/.config/brokerbot/ 0755 gege users - -"
+      # "d /run/user/1000/brokerbot 0755 gege users - -"
+      # "d /home/gege/.config/brokerbot/ 0755 gege users - -"
       "d ${toString cfg.storage} 0755 gege users - -"
       "d ${toString cfg.storage}/Media 0755 gege users - -"
       "d ${toString cfg.storage}/Media/torrents 0755 gege users - -"
-      "d ${toString cfg.storage}/socket-sender 0755 gege users - -"
-      "f ${toString cfg.storage}/prestart-brokerbot.sh 0755 gege users - -"
+      # "d ${toString cfg.storage}/socket-sender 0755 gege users - -"
+      # "f ${toString cfg.storage}/prestart-brokerbot.sh 0755 gege users - -"
     ];
     environment.systemPackages = with pkgs; [
       dive
@@ -89,6 +89,7 @@ in
           extraOptions = [
             "--network=media-download.network"
             "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
+            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -110,6 +111,7 @@ in
           extraOptions = [
             "--network=media-download.network"
             "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
+            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -152,7 +154,8 @@ in
           };
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=1000,gid=1000"
+            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
+            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -205,6 +208,7 @@ in
           extraOptions = [
             "--network=media-download.network"
             "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
+            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -228,11 +232,12 @@ in
             "${toString cfg.storage}/Media/torrents:/data/torrents"
             "qbittorrent-config:/config"
             # "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
-            "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
+            # "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
           ];
           extraOptions = [
             "--network=media-download.network"
             "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
+            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
       };
@@ -253,11 +258,11 @@ in
     };
 
     # Configurações de serviço adicionais (ExecStartPre e SuccessExitStatus) [cite: 3, 6]
-    systemd.services.podman-brokerbot.serviceConfig.ExecStartPre =
-      "${toString cfg.storage}/prestart-brokerbot.sh";
-    systemd.services.podman-jellyfin.serviceConfig.SuccessExitStatus = [
-      0
-      143
-    ];
+    # systemd.services.podman-brokerbot.serviceConfig.ExecStartPre =
+    #   "${toString cfg.storage}/prestart-brokerbot.sh";
+    # systemd.services.podman-jellyfin.serviceConfig.SuccessExitStatus = [
+    #   0
+    #   143
+    # ];
   };
 }

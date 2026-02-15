@@ -73,7 +73,7 @@
   };
   services.homelab = {
     storage = "/mnt/Storage";
-    brokerbotSocket = "/run/user/1000/brokerbot";
+    # brokerbotSocket = "/run/user/1000/brokerbot";
   };
 
 }

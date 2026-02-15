@@ -54,5 +54,5 @@
     "gege"
   ];
   services.homelab.storage = "/home/gege/Storage";
-  services.homelab.brokerbotSocket = "/run/user/1000/brokerbot";
+  # services.homelab.brokerbotSocket = "/run/user/1000/brokerbot";
 }
