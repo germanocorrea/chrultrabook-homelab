@@ -12,9 +12,10 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "ipv6.disable=1" ];
 
   networking.hostName = "chrultrabook-homelab";
-
+  networking.enableIPv6 = false;
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/Sao_Paulo";
