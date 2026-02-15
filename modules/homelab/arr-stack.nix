@@ -43,9 +43,9 @@ in
     systemd.tmpfiles.rules = [
       # "d /run/user/1000/brokerbot 0755 gege users - -"
       # "d /home/gege/.config/brokerbot/ 0755 gege users - -"
-      "d ${toString cfg.storage} 0755 gege users - -"
-      "d ${toString cfg.storage}/Media 0755 gege users - -"
-      "d ${toString cfg.storage}/Media/torrents 0755 gege users - -"
+      # "d ${toString cfg.storage} 0755 gege users - -"
+      # "d ${toString cfg.storage}/Media 0755 gege users - -"
+      # "d ${toString cfg.storage}/Media/torrents 0755 gege users - -"
       # "d ${toString cfg.storage}/socket-sender 0755 gege users - -"
       # "f ${toString cfg.storage}/prestart-brokerbot.sh 0755 gege users - -"
     ];
@@ -83,13 +83,30 @@ in
             TZ = "America/Sao_Paulo";
           };
           volumes = [
-            "${toString cfg.storage}/Media:/data"
-            "sonarr-config:/config"
+            "${toString cfg.storage}/Media:/data:Z"
+            "sonarr-config:/config:Z"
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
-            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
+          ];
+        };
+
+        radarr = {
+          autoStart = true;
+          image = "lscr.io/linuxserver/radarr:latest";
+          ports = [ "7878:7878/tcp" ];
+          environment = {
+            PUID = toString config.users.users.gege.uid;
+            PGID = toString config.users.groups.users.gid;
+            UMASK = "002";
+            TZ = "America/Sao_Paulo";
+          };
+          volumes = [
+            "${toString cfg.storage}/Media:/data:Z"
+            "radarr-config:/config:Z"
+          ];
+          extraOptions = [
+            "--network=media-download.network"
           ];
         };
 
@@ -105,13 +122,11 @@ in
             WEBUI_PORTS = "6767/tcp,6767/udp";
           };
           volumes = [
-            "${toString cfg.storage}/Media:/data"
-            "bazarr-config:/config"
+            "${toString cfg.storage}/Media:/data:Z"
+            "bazarr-config:/config:Z"
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
-            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -130,7 +145,6 @@ in
         #     "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
         #     "-webhook-secret-token=**REDACTED**"
         #   ];
-        #   extraOptions = [ "--userns=keep-id:uid=1000,gid=1000" ];
         # };
 
         # connectiontester = {
@@ -141,7 +155,6 @@ in
         #     "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
         #     "-address=google.com:80"
         #   ];
-        #   extraOptions = [ "--userns=keep-id" ];
         #   dependsOn = [ "brokerbot" ];
         # };
 
@@ -154,8 +167,6 @@ in
           };
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
-            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -174,8 +185,6 @@ in
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
-            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
             "--no-healthcheck"
           ];
         };
@@ -204,11 +213,9 @@ in
             UMASK = "002";
             TZ = "America/Sao_Paulo";
           };
-          volumes = [ "prowlarr-config:/config" ];
+          volumes = [ "prowlarr-config:/config:Z" ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
-            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
 
@@ -229,15 +236,13 @@ in
             TORRENTING_PORT = "6881";
           };
           volumes = [
-            "${toString cfg.storage}/Media/torrents:/data/torrents"
-            "qbittorrent-config:/config"
+            "${toString cfg.storage}/Media/torrents:/data/torrents:Z"
+            "qbittorrent-config:/config:Z"
             # "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
             # "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
           ];
           extraOptions = [
             "--network=media-download.network"
-            "--userns=keep-id:uid=${toString config.users.users.gege.uid},gid=${toString config.users.groups.users.gid}"
-            "--user=${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid}"
           ];
         };
       };

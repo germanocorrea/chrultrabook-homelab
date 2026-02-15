@@ -1,14 +1,13 @@
 { config, pkgs, ... }:
 let
   cloudflareToken = "**REDACTED**";
-  virtualHostConfig = port:
-  {
+  virtualHostConfig = port: {
     extraConfig = ''
-        tls {
-          dns cloudflare "**REDACTED**"
-        }
-        reverse_proxy localhost:${port}
-      '';
+      tls {
+        dns cloudflare "**REDACTED**"
+      }
+      reverse_proxy localhost:${port}
+    '';
   };
 in
 {
@@ -38,6 +37,7 @@ in
 
     virtualHosts = {
       "sonarr.gege.xyz.br" = (virtualHostConfig "8989");
+      "radarr.gege.xyz.br" = (virtualHostConfig "7878");
       "bazarr.gege.xyz.br" = (virtualHostConfig "6767");
       "flaresolverr.gege.xyz.br" = (virtualHostConfig "8191");
       "jellyfin.gege.xyz.br" = (virtualHostConfig "8096");

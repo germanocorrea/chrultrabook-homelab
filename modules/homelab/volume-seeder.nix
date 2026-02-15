@@ -63,20 +63,16 @@ in
               ${pkgs.podman}/bin/podman volume create ${name} || true
               MOUNTPOINT=$(${pkgs.podman}/bin/podman volume inspect ${name} --format '{{.Mountpoint}}')
 
-              # Se forceOverwrite for true OU o volume estiver vazio, restaura.
               if ${if cfg.forceOverwrite then "true" else "[ -z \"$(ls -A $MOUNTPOINT)\" ]"}; then
-                echo "Restaurando volume ${name}..."
                 if [ -f "${cfg.backupPath}/${name}.tar" ]; then
+                  echo "Limpando e restaurando ${name}..."
+                  rm -rf "$MOUNTPOINT"/*
                   ${pkgs.podman}/bin/podman volume import ${name} "${cfg.backupPath}/${name}.tar"
-                else
-                  echo "Aviso: Arquivo de backup ${cfg.backupPath}/${name}.tar não encontrado. Pulando restauração."
                 fi
               fi
 
-              # Garante as permissões SEMPRE, mesmo que a restauração não tenha ocorrido agora
-              # Isso corrige volumes que foram criados/restaurados com permissões erradas anteriormente
-              echo "Garantindo permissões ${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid} em $MOUNTPOINT"
-              chown -R ${toString config.users.users.gege.uid}:${toString config.users.groups.users.gid} "$MOUNTPOINT"
+              # Garante que o gege (1000) seja o dono para que o PUID funcione
+              chown -R 1000:100 "$MOUNTPOINT"
             '';
             serviceConfig.Type = "oneshot";
           };
