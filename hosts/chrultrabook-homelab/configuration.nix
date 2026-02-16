@@ -12,11 +12,23 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelParams = [ "ipv6.disable=1" ];
+  boot.kernelParams = [
+    "ipv6.disable=1"
+    "usbcore.autosuspend=-1"
+  ];
+
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="00e0", ATTR{idProduct}=="8153", ATTR{power/control}="on"
+  '';
 
   networking.hostName = "chrultrabook-homelab";
   networking.enableIPv6 = false;
   networking.networkmanager.enable = true;
+  networking.networkmanager.extraConfig = ''
+    [connection]
+    wifi.powersave = 2
+    ethernet.wake-on-lan = ignore
+  '';
 
   time.timeZone = "America/Sao_Paulo";
 
