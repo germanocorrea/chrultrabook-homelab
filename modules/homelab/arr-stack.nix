@@ -248,14 +248,14 @@ in
 
         wallabag = {
           autoStart = true;
-          image = "";
+          image = "docker.io/wallabag/wallabag:latest";
           ports = [
             "8080:8083/tcp" # revisar a porta de saida
           ];
           environment = {
             PUID = toString config.users.users.gege.uid;
             PGID = toString config.users.groups.users.gid;
-            SYMFONY__ENV__DOMAIN_NAME = "http://wallabag.gege.xyz.br";
+            SYMFONY__ENV__DOMAIN_NAME = "https://wallabag.gege.xyz.br";
           };
           volumes = [
             "${toString cfg.storage}/Wallabag/data:/var/www/wallabag/data:Z"
