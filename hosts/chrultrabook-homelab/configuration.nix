@@ -24,11 +24,12 @@
   networking.hostName = "chrultrabook-homelab";
   networking.enableIPv6 = false;
   networking.networkmanager.enable = true;
-  networking.networkmanager.extraConfig = ''
-    [connection]
-    wifi.powersave = 2
-    ethernet.wake-on-lan = ignore
-  '';
+  networking.networkmanager.settings = {
+    connection = {
+      "wifi.powersave" = 2;
+      "ethernet.wake-on-lan" = "ignore";
+    };
+  };
 
   time.timeZone = "America/Sao_Paulo";
 
