@@ -250,7 +250,7 @@ in
           autoStart = true;
           image = "docker.io/wallabag/wallabag:latest";
           ports = [
-            "8083:8080/tcp" # revisar a porta de saida
+            "8181:80/tcp" # revisar a porta de saida
           ];
           environment = {
             PUID = toString config.users.users.gege.uid;
