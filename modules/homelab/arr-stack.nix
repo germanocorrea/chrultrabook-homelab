@@ -210,6 +210,7 @@ in
         qbittorrent = {
           autoStart = true;
           image = "lscr.io/linuxserver/qbittorrent:latest";
+          dependsOn = [ "brokerbot" ];
           ports = [
             "8080:8080/tcp"
             "6881:6881/tcp"
@@ -226,7 +227,7 @@ in
           volumes = [
             "${toString cfg.storage}/Media/torrents:/data/torrents:Z"
             "qbittorrent-config:/config:Z"
-            # "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
+            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
             # "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
             # "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
           ];
