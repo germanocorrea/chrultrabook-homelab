@@ -10,7 +10,8 @@ with lib;
 let
   cfg = config.services.homelab;
   brokerBotVolume = "brokerbotSocket";
-  brokerBotSocketContainerPath = "/run/brokerbot/";
+  brokerBotSocketContainerPath = "/tmp/";
+  brokerBotSocketPath = "${brokerBotSocketContainerPath}brokerbot.sock";
 in
 {
   options.services.homelab = {
@@ -26,8 +27,10 @@ in
       # "d /run/user/1000/brokerbot 0755 gege users - -"
       # "d /home/gege/.config/brokerbot/ 0755 gege users - -"
       # "d ${toString cfg.storage} 0755 gege users - -"
-      # "d ${toString cfg.storage}/Media 0755 gege users - -"
-      # "d ${toString cfg.storage}/Media/torrents 0755 gege users - -"
+      "d ${toString cfg.storage}/Media 0755 gege users - -"
+      "d ${toString cfg.storage}/Media/torrents 0755 gege users - -"
+      "d ${toString cfg.storage}/brokerbot-config 0755 gege users - -"
+      "f ${toString cfg.storage}/brokerbot-config/chats 0755 gege users - -"
       # "d ${toString cfg.storage}/socket-sender 0755 gege users - -"
       # "f ${toString cfg.storage}/prestart-brokerbot.sh 0755 gege users - -"
     ];
@@ -119,13 +122,15 @@ in
             NGROK_AUTHTOKEN = "**REDACTED**";
           };
           volumes = [
-            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}"
+            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
+            "${toString cfg.storage}/brokerbot-config:/app/brokerbot-config:Z"
           ];
           cmd = [
             "-ngrok"
             "-token=**REDACTED**"
             "-password=**REDACTED**"
-            "-socket=${toString brokerBotSocketContainerPath}brokerbot.sock"
+            "-socket=${toString brokerBotSocketPath}"
+            "-chat-list-file=/app/brokerbot-config/chats"
             "-webhook-secret-token=**REDACTED**"
           ];
         };
@@ -221,7 +226,7 @@ in
           volumes = [
             "${toString cfg.storage}/Media/torrents:/data/torrents:Z"
             "qbittorrent-config:/config:Z"
-            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}"
+            # "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
             # "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
             # "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
           ];
