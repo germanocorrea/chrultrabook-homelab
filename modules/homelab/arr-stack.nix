@@ -11,12 +11,6 @@ let
   cfg = config.services.homelab;
   brokerBotVolume = "brokerbotSocket";
   brokerBotSocketContainerPath = "/run/brokerbot/";
-  brokerBotImage = pkgs.dockerTools.pullImage {
-    imageName = "ghcr.io/germanocorrea/brokerbot:main";
-    imageDigest = "sha256:6ddbeb229614812f3b9dda966a273d5b70a24bf9bff296539e692d1765d8b656";
-    finalImageName = "brokerbot";
-    finalImageTag = "main";
-  };
 in
 {
   options.services.homelab = {
@@ -120,8 +114,7 @@ in
 
         brokerbot = {
           autoStart = true;
-          image = "brokerbot:latest";
-          imageStream = brokerBotImage;
+          image = "ghcr.io/germanocorrea/brokerbot:main";
           environment = {
             NGROK_AUTHTOKEN = "**REDACTED**";
           };
