@@ -9,23 +9,14 @@ with lib;
 
 let
   cfg = config.services.homelab;
-  # brokerBotImage = pkgs.dockerTools.buildImage {
-  #   name = "brokerbot";
-  #   tag = "latest";
-  #   # copyToRoot = [ pkgs.myBrokerBotPackage ];
-  #   config = {
-  #     Cmd = [ "brokerbot" ];
-  #     WorkingDir = "/";
-  #   };
-  # };
-  # connectiontesterImage = pkgs.dockerTools.buildImage {
-  #   name = "connectiontester";
-  #   tag = "latest";
-  #   config = {
-  #     Cmd = [ "connectiontester" ];
-  #     WorkingDir = "/";
-  #   };
-  # };
+  brokerBotVolume = "brokerbotSocket";
+  brokerBotSocketContainerPath = "/run/brokerbot/";
+  brokerBotImage = pkgs.dockerTools.pullImage {
+    imageName = "ghcr.io/germanocorrea/brokerbot:main";
+    imageDigest = "sha256:6ddbeb229614812f3b9dda966a273d5b70a24bf9bff296539e692d1765d8b656";
+    finalImageName = "brokerbot";
+    finalImageTag = "main";
+  };
 in
 {
   options.services.homelab = {
@@ -33,14 +24,11 @@ in
       type = types.path;
       description = "Default storage for all bind mounts";
     };
-    # brokerbotSocket = mkOption {
-    #   type = types.path;
-    #   description = "Default path of brokerbot socket";
-    # };
   };
 
   config = {
     systemd.tmpfiles.rules = [
+      # https://www.mankier.com/5/tmpfiles.d
       # "d /run/user/1000/brokerbot 0755 gege users - -"
       # "d /home/gege/.config/brokerbot/ 0755 gege users - -"
       # "d ${toString cfg.storage} 0755 gege users - -"
@@ -130,22 +118,24 @@ in
           ];
         };
 
-        # brokerbot = {
-        #   autoStart = true;
-        #   image = "brokerbot:latest";
-        #   imageStream = brokerBotImage;
-        #   environment = {
-        #     NGROK_AUTHTOKEN = "**REDACTED**";
-        #   };
-        #   volumes = [ "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}" ];
-        #   cmd = [
-        #     "-ngrok"
-        #     "-token=**REDACTED**"
-        #     "-password=**REDACTED**"
-        #     "-socket=${toString cfg.brokerbotSocket}brokerbot.sock"
-        #     "-webhook-secret-token=**REDACTED**"
-        #   ];
-        # };
+        brokerbot = {
+          autoStart = true;
+          image = "brokerbot:latest";
+          imageStream = brokerBotImage;
+          environment = {
+            NGROK_AUTHTOKEN = "**REDACTED**";
+          };
+          volumes = [
+            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}"
+          ];
+          cmd = [
+            "-ngrok"
+            "-token=**REDACTED**"
+            "-password=**REDACTED**"
+            "-socket=${toString brokerBotSocketContainerPath}brokerbot.sock"
+            "-webhook-secret-token=**REDACTED**"
+          ];
+        };
 
         # connectiontester = {
         #   image = "connectiontester:latest";
@@ -238,6 +228,7 @@ in
           volumes = [
             "${toString cfg.storage}/Media/torrents:/data/torrents:Z"
             "qbittorrent-config:/config:Z"
+            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}"
             # "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
             # "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
           ];
