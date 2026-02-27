@@ -9,9 +9,9 @@ with lib;
 
 let
   cfg = config.services.homelab;
-  brokerBotVolume = "brokerbotSocket";
-  brokerBotSocketContainerPath = "/tmp/";
+  brokerBotSocketContainerPath = "/tmp/brokerbot";
   brokerBotSocketPath = "${brokerBotSocketContainerPath}brokerbot.sock";
+  brokerBotVolume = "${brokerBotSocketContainerPath}";
 in
 {
   options.services.homelab = {
@@ -227,9 +227,7 @@ in
           volumes = [
             "${toString cfg.storage}/Media/torrents:/data/torrents:Z"
             "qbittorrent-config:/config:Z"
-            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
-            # "${toString cfg.brokerbotSocket}:${toString cfg.brokerbotSocket}"
-            # "${toString cfg.storage}/socket-sender/:/run/user/1000/socket-sender/"
+            # "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
           ];
           extraOptions = [
             "--network=media-download.network"
