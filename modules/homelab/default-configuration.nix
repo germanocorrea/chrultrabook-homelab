@@ -13,6 +13,7 @@
     ./arr-stack.nix
     ./volume-seeder.nix
     ./tailscale.nix
+    ./health.nix
     {
       services.homelab.migration.enableRestore =
         if (builtins.getEnv "MIGRATE") == "1" then true else false;

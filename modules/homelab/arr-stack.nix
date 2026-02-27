@@ -10,7 +10,7 @@ with lib;
 let
   cfg = config.services.homelab;
   brokerBotSocketContainerPath = "/tmp/brokerbot";
-  brokerBotSocketPath = "${brokerBotSocketContainerPath}brokerbot.sock";
+  brokerBotSocketPath = "${brokerBotSocketContainerPath}/brokerbot.sock";
   brokerBotVolume = "${brokerBotSocketContainerPath}";
 in
 {
@@ -27,6 +27,7 @@ in
       # "d /run/user/1000/brokerbot 0755 gege users - -"
       # "d /home/gege/.config/brokerbot/ 0755 gege users - -"
       # "d ${toString cfg.storage} 0755 gege users - -"
+      "D ${toString brokerBotVolume} 0755 gege users - -"
       "d ${toString cfg.storage}/Media 0755 gege users - -"
       "d ${toString cfg.storage}/Media/torrents 0755 gege users - -"
       "d ${toString cfg.storage}/brokerbot-config 0755 gege users - -"
