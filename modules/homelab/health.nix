@@ -71,7 +71,7 @@
       PERSISTED_FILE="$HOME/.storage-tester-state"
       CURRENT_STATE_STRING_OUTPUT=$(df -h --output='pcent,target' | grep Storage | column --table --table-columns 'percent,target' --table-hide 'target' -d)
       REMOVEDCHAR="%"
-      CURRENT_STATE_STRING="$/{CURRENT_STATE_STRING_OUTPUT//$REMOVEDCHAR/}"
+      CURRENT_STATE_STRING="${"\${CURRENT_STATE_STRING_OUTPUT//$REMOVEDCHAR/}"}"
       CURRENT_STATE=$((CURRENT_STATE_STRING))
       THRESHOLD=95
       if [[ -f $PERSISTED_FILE ]]; then
