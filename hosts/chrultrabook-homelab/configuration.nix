@@ -31,6 +31,14 @@
     };
   };
 
+  # networking.networkmanager.wifi.enable = false;
+  networking.networkmanager.unmanaged = [
+    "interface-name:wlp2s0"
+    "interface-name:p2p-dev-wlp2s0"
+  ];
+
+  systemd.services.wpa_supplicant.enable = false;
+
   time.timeZone = "America/Sao_Paulo";
 
   i18n.defaultLocale = "en_US.UTF-8";
