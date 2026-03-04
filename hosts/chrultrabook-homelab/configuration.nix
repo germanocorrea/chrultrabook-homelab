@@ -76,6 +76,7 @@
     vim
     wget
     git
+    btop
   ];
   services.openssh.enable = true;
 
