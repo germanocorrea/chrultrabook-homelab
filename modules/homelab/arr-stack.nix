@@ -251,6 +251,17 @@ in
         #     "${toString cfg.storage}/Wallabag/images:/var/www/wallabag/web/assets/images:Z"
         #   ];
         # };
+
+        archiveteam-warrior = {
+          autoStart = true;
+          image = "atdr.meo.ws/archiveteam/warrior-dockerfile";
+          ports = [
+            "8001:8001/tcp"
+          ];
+          volumes = [
+            "archiveteam-warrior-projects:/home/warrior/projects"
+          ];
+        };
       };
     };
 

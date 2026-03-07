@@ -46,6 +46,7 @@ in
       "torrent.gege.xyz.br" = (virtualHostConfig "8080");
       "cockpit.gege.xyz.br" = (virtualHostConfig "9090");
       "wallabag.gege.xyz.br" = (virtualHostConfig "8181");
+      "archiveteam-warrior.gege.xyz.br" = (virtualHostConfig "8001");
     };
     # virtualHosts."jellyfin.gege.xyz.br".extraConfig = ''
     #   tls {
