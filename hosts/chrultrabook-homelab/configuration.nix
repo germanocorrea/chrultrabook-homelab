@@ -77,6 +77,7 @@
     wget
     git
     btop
+    fastfetch
   ];
   services.openssh.enable = true;
 
