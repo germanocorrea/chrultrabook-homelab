@@ -33,7 +33,7 @@
   systemd.services."power-tester" = {
     script = ''
       PERSISTED_FILE="$HOME/.power-tester-state"
-      CURRENT_STATE=$(cat /sys/class/power-supply/AC/online)
+      CURRENT_STATE=$(cat /sys/class/power_supply/AC/online)
       if [[ -f $PERSISTED_FILE ]]; then
           PERSISTED_STATE=$(cat $PERSISTED_FILE)
       else
