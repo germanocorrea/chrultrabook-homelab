@@ -117,22 +117,22 @@ in
           ];
         };
 
-        # brokerbot = {
-        #   autoStart = true;
-        #   image = "ghcr.io/germanocorrea/brokerbot:main";
-        #   extraOptions = [
-        #     "--env-file=${config.sops.templates."brokerbot.env".path}"
-        #   ];
-        #   volumes = [
-        #     "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
-        #     "${toString cfg.storage}/brokerbot-config:/app/brokerbot-config:Z"
-        #   ];
-        #   cmd = [
-        #     "sh"
-        #     "-c"
-        #     "exec /app/brokerbot -ngrok -token=\"$TELEGRAM_TOKEN\" -password=\"$BROKERBOT_PASSWORD\" -socket=\"${brokerBotSocketPath}\" -chat-list-file=/app/brokerbot-config/chats -webhook-secret-token=\"$BROKERBOT_WEBHOOK_SECRET\""
-        #   ];
-        # };
+        brokerbot = {
+          autoStart = true;
+          image = "ghcr.io/germanocorrea/brokerbot:main";
+          extraOptions = [
+            "--env-file=${config.sops.templates."brokerbot.env".path}"
+          ];
+          volumes = [
+            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
+            "${toString cfg.storage}/brokerbot-config:/app/brokerbot-config:Z"
+          ];
+          cmd = [
+            "sh"
+            "-c"
+            "exec /app/brokerbot -ngrok -token=\"$TELEGRAM_TOKEN\" -password=\"$BROKERBOT_PASSWORD\" -socket=\"${brokerBotSocketPath}\" -chat-list-file=/app/brokerbot-config/chats -webhook-secret-token=\"$BROKERBOT_WEBHOOK_SECRET\""
+          ];
+        };
 
         # connectiontester = {
         #   image = "connectiontester:latest";
