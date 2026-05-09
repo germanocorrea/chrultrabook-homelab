@@ -16,6 +16,7 @@
     # "ipv6.disable=1"
     "usbcore.autosuspend=-1"
   ];
+  boot.blacklistedKernelModules = [ "tpm" "tpm_tis" "tpm_tis_core" "tpm_crb" ];
 
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="00e0", ATTR{idProduct}=="8153", ATTR{power/control}="on"
