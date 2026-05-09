@@ -3,9 +3,9 @@ let
   virtualHostConfig = port: {
     extraConfig = ''
       tls {
-        dns cloudflare {$CLOUDFLARE_API_TOKEN}
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
       }
-      reverse_proxy localhost:${port}
+      reverse_proxy 127.0.0.1:${port}
     '';
   };
 in
@@ -29,8 +29,8 @@ in
     enable = true;
     # Usamos o pacote com suporte a DNS Cloudflare
     package = pkgs.caddy.withPlugins {
-      plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-      hash = "sha256-+htYZclHv9qI0TeHcBFvPkWzJVAZ5jqzTODrh4YmqXY=";
+      plugins = [ "github.com/caddy-dns/cloudflare@v0.2.4" ];
+      hash = "sha256-J0HWjCPoOoARAxDpG2bS9c0x5Wv4Q23qWZbTjd8nW84=";
     };
 
     virtualHosts = {

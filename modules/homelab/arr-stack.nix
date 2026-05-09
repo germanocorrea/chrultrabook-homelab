@@ -117,22 +117,27 @@ in
           ];
         };
 
-        brokerbot = {
-          autoStart = true;
-          image = "ghcr.io/germanocorrea/brokerbot:main";
-          extraOptions = [
-            "--env-file=${config.sops.templates."brokerbot.env".path}"
-          ];
-          volumes = [
-            "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
-            "${toString cfg.storage}/brokerbot-config:/app/brokerbot-config:Z"
-          ];
-          cmd = [
-            "sh"
-            "-c"
-            "exec /app/brokerbot -ngrok -token=\"$TELEGRAM_TOKEN\" -password=\"$BROKERBOT_PASSWORD\" -socket=\"${brokerBotSocketPath}\" -chat-list-file=/app/brokerbot-config/chats -webhook-secret-token=\"$BROKERBOT_WEBHOOK_SECRET\""
-          ];
-        };
+        # brokerbot = {
+        #   autoStart = false;
+        #   image = "ghcr.io/germanocorrea/brokerbot:main";
+        #   extraOptions = [
+        #     "--env=TOKEN"
+        #     "--env=NGROK_AUTHTOKEN"
+        #     "--env=BROKERBOT_PASSWORD"
+        #     "--env=BROKERBOT_WEBHOOK_SECRET"
+        #   ];
+        #   volumes = [
+        #     "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
+        #     "${toString cfg.storage}/brokerbot-config:/app/brokerbot-config:Z"
+        #   ];
+        #   cmd = [
+        #     "-ngrok"
+        #     "-password=$(BROKERBOT_PASSWORD)"
+        #     "-socket=${toString brokerBotSocketPath}"
+        #     "-chat-list-file=/app/brokerbot-config/chats"
+        #     "-webhook-secret-token=$(BROKERBOT_WEBHOOK_SECRET)"
+        #   ];
+        # };
 
         # connectiontester = {
         #   image = "connectiontester:latest";
@@ -209,7 +214,7 @@ in
         qbittorrent = {
           autoStart = true;
           image = "lscr.io/linuxserver/qbittorrent:latest";
-          dependsOn = [ "brokerbot" ];
+          # dependsOn = [ "brokerbot" ];
           ports = [
             "8080:8080/tcp"
             "6881:6881/tcp"
@@ -284,5 +289,6 @@ in
     #   0
     #   143
     # ];
+    systemd.services.podman-brokerbot.serviceConfig.EnvironmentFile = config.sops.templates."brokerbot.env".path;
   };
 }
