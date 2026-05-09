@@ -99,5 +99,10 @@
   services.homelab = {
     storage = "/mnt/Storage";
   };
-
+  nix.settings.auto-optimise-store = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
 }
