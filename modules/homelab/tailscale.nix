@@ -3,7 +3,7 @@ let
   virtualHostConfig = port: {
     extraConfig = ''
       tls {
-        dns cloudflare {env.CLOUDFLARE_TOKEN}
+        dns cloudflare {$CLOUDFLARE_TOKEN}
       }
       reverse_proxy localhost:${port}
     '';
@@ -49,4 +49,5 @@ in
   };
 
   systemd.services.caddy.serviceConfig.EnvironmentFile = config.sops.templates."caddy.env".path;
+  systemd.services.caddy-api.serviceConfig.EnvironmentFile = config.sops.templates."caddy.env".path;
 }
