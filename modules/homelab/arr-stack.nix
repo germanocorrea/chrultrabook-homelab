@@ -120,16 +120,16 @@ in
         brokerbot = {
           autoStart = true;
           image = "ghcr.io/germanocorrea/brokerbot:main";
-          environment = {
-            NGROK_AUTHTOKEN = "**REDACTED**";
-          };
+          extraOptions = [
+            "--env-file=${config.sops.templates."brokerbot.env".path}"
+          ];
           volumes = [
             "${toString brokerBotVolume}:${toString brokerBotSocketContainerPath}:Z"
             "${toString cfg.storage}/brokerbot-config:/app/brokerbot-config:Z"
           ];
           cmd = [
             "-ngrok"
-            "-token=**REDACTED**"
+            "-token=$(TELEGRAM_TOKEN)"
             "-password=**REDACTED**"
             "-socket=${toString brokerBotSocketPath}"
             "-chat-list-file=/app/brokerbot-config/chats"

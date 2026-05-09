@@ -10,6 +10,7 @@
     };
   };
   imports = [
+    ./secrets.nix
     ./arr-stack.nix
     ./volume-seeder.nix
     ./tailscale.nix

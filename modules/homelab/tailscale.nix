@@ -1,10 +1,9 @@
 { config, pkgs, ... }:
 let
-  cloudflareToken = "**REDACTED**";
   virtualHostConfig = port: {
     extraConfig = ''
       tls {
-        dns cloudflare "**REDACTED**"
+        dns cloudflare {env.CLOUDFLARE_TOKEN}
       }
       reverse_proxy localhost:${port}
     '';
@@ -15,7 +14,6 @@ in
 
   # Habilita o serviço do Tailscale
   services.tailscale.enable = true;
-  # services.homelab.cloudflareDnsToken = "**REDACTED**";
 
   # Pacotes necessários
   environment.systemPackages = with pkgs; [
@@ -48,12 +46,7 @@ in
       "wallabag.gege.xyz.br" = (virtualHostConfig "8181");
       "archiveteam-warrior.gege.xyz.br" = (virtualHostConfig "8001");
     };
-    # virtualHosts."jellyfin.gege.xyz.br".extraConfig = ''
-    #   tls {
-    #     dns cloudflare "${cloudflareToken}"
-    #   }
-    #   # Aponta para a porta do Jellyfin definida no seu módulo arr-stack.nix
-    #   reverse_proxy localhost:8096
-    # '';
   };
+
+  systemd.services.caddy.serviceConfig.EnvironmentFile = config.sops.templates."caddy.env".path;
 }
