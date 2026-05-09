@@ -122,4 +122,5 @@
     sops.secrets."homelab/tokens/cloudflare" = {};
     sops.secrets."homelab/tokens/ngrok" = {};
     sops.secrets."homelab/tokens/telegram" = {};
+    sops.secrets."homelab/tokens/telegram" = {};
 }
