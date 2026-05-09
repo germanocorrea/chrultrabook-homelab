@@ -130,10 +130,10 @@ in
           cmd = [
             "-ngrok"
             "-token=$(TELEGRAM_TOKEN)"
-            "-password=**REDACTED**"
+            "-password=$(BROKERBOT_PASSWORD)"
             "-socket=${toString brokerBotSocketPath}"
             "-chat-list-file=/app/brokerbot-config/chats"
-            "-webhook-secret-token=**REDACTED**"
+            "-webhook-secret-token=$(BROKERBOT_WEBHOOK_SECRET)"
           ];
         };
 
