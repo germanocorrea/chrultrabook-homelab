@@ -39,6 +39,7 @@ in
       dive
       podman-tui
       podman-compose
+      cbonsai
     ];
     virtualisation = {
       containers = {
