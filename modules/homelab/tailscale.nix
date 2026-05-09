@@ -3,7 +3,7 @@ let
   virtualHostConfig = port: {
     extraConfig = ''
       tls {
-        dns cloudflare {$CLOUDFLARE_TOKEN}
+        dns cloudflare {$CLOUDFLARE_API_TOKEN}
       }
       reverse_proxy localhost:${port}
     '';

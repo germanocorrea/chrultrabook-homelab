@@ -27,7 +27,7 @@
 
     templates."caddy.env" = {
       content = ''
-        CLOUDFLARE_TOKEN=${config.sops.placeholder."homelab/tokens/cloudflare"}
+        CLOUDFLARE_API_TOKEN=${config.sops.placeholder."homelab/tokens/cloudflare"}
       '';
     };
   };
