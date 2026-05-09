@@ -119,7 +119,6 @@
     # This will generate a new key if the key specified above does not exist
     sops.age.generateKey = true;
     # This is the actual specification of the secrets.
-    sops.secrets.example-key = {};
     sops.secrets."homelab/tokens/cloudflare" = {};
     sops.secrets."homelab/tokens/ngrok" = {};
     sops.secrets."homelab/tokens/telegram" = {};
