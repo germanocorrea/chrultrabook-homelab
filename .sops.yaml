@@ -1,0 +1,9 @@
+keys:
+  - &gege age1kczntwfp52naztvd3wv8atcks492zwa32yth8mj2vea6rslt7pkq38pva4
+  - &chromelab age1a4w9qpteh4yhkfduc45duwgr9cvrh4y6wkfukmrmcdnlkxwzxejqs2d6xr
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *gege
+          - *chromelab
