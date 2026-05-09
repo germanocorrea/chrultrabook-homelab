@@ -132,7 +132,7 @@ in
         #     "-c"
         #     "exec /app/brokerbot -ngrok -token=\"$TELEGRAM_TOKEN\" -password=\"$BROKERBOT_PASSWORD\" -socket=\"${brokerBotSocketPath}\" -chat-list-file=/app/brokerbot-config/chats -webhook-secret-token=\"$BROKERBOT_WEBHOOK_SECRET\""
         #   ];
-        };
+        # };
 
         # connectiontester = {
         #   image = "connectiontester:latest";
