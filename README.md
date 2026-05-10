@@ -21,9 +21,13 @@ NixOS is the perfect distribution for homelabs like this. Its declarative nature
 
 [Flakes](https://nixos.wiki/wiki/flakes) are a way to manage NixOS configurations as packages, allowing for easy reproducibility and sharing of configurations across different machines and pinning dependencies to specific versions. Personally, the best part of this is being able to deploy everything from outside the server, without needing to SSH into it, except when debugging.
 
-### Tailscale and Cloudlfare domain
+### Tailscale, Cloudlfare DNS
 
 To a "VPN-like" experience, I use [Tailscale](https://tailscale.com/), which connects my devices between each other and allow me to access the homelab everywhere I go, while also ensuring that I can stream videos without arbitrary limits. [Cloudflare](https://www.cloudflare.com/) DNS is used to provide my custom domain for the homelab, making it easier to remember domains and access them, although all of them are private. This also makes HTTPS available for all services, without any additional configuration.
+
+### USB Chalenges
+
+Because CELES doesn't have an ethernet port and a SATA connection, both networking and external storage need to be used through USB adapters. Initial configurations were very unstable because of this, so specific kernel modules and flags were needed to prevent unstable behavior.
 
 ### SOPS secrets management
 
