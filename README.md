@@ -1,6 +1,6 @@
 # Chrultrabook Homelab
 
-This is my homelab configuration in a Chrultrabook. A Chrultrabook is a flashed Chromebook with [LibreBoot](https://libreboot.org/), cabaple of running Linux or Windows instead of Chrome OS. For more on this, refer to [MrChromebox](https://docs.mrchromebox.tech/) and [Chrultrabook](https://docs.chrultrabook.com/) documentations.
+This is my homelab configuration in a Chrultrabook. A Chrultrabook is a flashed Chromebook with [LibreBoot](https://libreboot.org/), capable of running Linux or Windows instead of Chrome OS. For more on this, refer to [MrChromebox](https://docs.mrchromebox.tech/) and [Chrultrabook](https://docs.chrultrabook.com/) documentations.
 
 ## Hardware
 
@@ -15,7 +15,7 @@ Samsung Chromebook 3 (CELES)
 
 ### NixOS
 
-NixOS is the perfect distribution for homelabs like this. Its declarative nature makes it easier to keep track of changes, and reproducibility ensures consistent behavior across different hardware configurations. For exemple: although the vm-homelab host is deprecated, I used it first to test the entire configuration before deploying it to the actual hardware. This is perfect for a "staging" environment, and to redeploy the homelab on new hardware, if I ever get my hands in a new server (I hope so).
+NixOS is the perfect distribution for homelabs like this. Its declarative nature makes it easier to keep track of changes, and reproducibility ensures consistent behavior across different hardware configurations. For example: although the vm-homelab host is deprecated, I used it first to test the entire configuration before deploying it to the actual hardware. This is perfect for a "staging" environment, and to redeploy the homelab on new hardware, if I ever get my hands in a new server (I hope so).
 
 ### Flakes
 
@@ -23,7 +23,7 @@ NixOS is the perfect distribution for homelabs like this. Its declarative nature
 
 ### Tailscale and Cloudlfare domain
 
-To a "VPN-like" experience, I use [Tailscale](https://tailscale.com/), which connects my devices between each other and allow me to access the homelab everywhere I go, while also ensuring that I can stream videos withouth arbitrary limits. [Cloudflare](https://www.cloudflare.com/) DNS is used to provide my custom domain for the homelab, making it easier to remember domains and access them, although all of them are private. This also makes HTTPS avaiable for all services, without any additional configuration.
+To a "VPN-like" experience, I use [Tailscale](https://tailscale.com/), which connects my devices between each other and allow me to access the homelab everywhere I go, while also ensuring that I can stream videos without arbitrary limits. [Cloudflare](https://www.cloudflare.com/) DNS is used to provide my custom domain for the homelab, making it easier to remember domains and access them, although all of them are private. This also makes HTTPS available for all services, without any additional configuration.
 
 ### SOPS secrets management
 
