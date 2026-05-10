@@ -33,7 +33,7 @@ Because CELES doesn't have an ethernet port and a SATA connection, both networki
 
 To manage secrets (tokens such as cloudflare), I use [SOPS](https://github.com/getsops/sops) through [sops-nix](https://github.com/Mic92/sops-nix), which encrypts secrets using [age](https://github.com/FiloSottile/age) and stores them in Git. This ensures that secrets are stored encrypted in the same repository as the homelab definition, can be edited in my personal machine and used in the server, and I still can share this configuration here :)
 
-### External Storage
+### Default Services Storage
 
 Since CELES has very limited storage capacity, I require using external storage for basically everything. The only thing that varies in storage still inside the eMMC is the NixOS configuration itself and everything in /nix/store. This means I need to be really careful when doing a full update and making sure old files are properly cleaned up.
 
