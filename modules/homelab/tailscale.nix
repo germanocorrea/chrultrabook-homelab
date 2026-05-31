@@ -45,6 +45,7 @@ in
       "cockpit.gege.xyz.br" = (virtualHostConfig "9090");
       "wallabag.gege.xyz.br" = (virtualHostConfig "8181");
       "archiveteam-warrior.gege.xyz.br" = (virtualHostConfig "8001");
+      "sync.gege.xyz.br" = (virtualHostConfig "8384");
     };
   };
 
