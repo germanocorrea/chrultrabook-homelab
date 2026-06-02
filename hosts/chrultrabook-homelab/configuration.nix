@@ -14,7 +14,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [
-    # "ipv6.disable=1"
+    "ipv6.disable=1"
     "usbcore.autosuspend=-1"
   ];
   boot.blacklistedKernelModules = [ "tpm" "tpm_tis" "tpm_tis_core" "tpm_crb" ];
@@ -24,7 +24,7 @@
   '';
 
   networking.hostName = "chrultrabook-homelab";
-  # networking.enableIPv6 = false;
+  networking.enableIPv6 = false;
   networking.networkmanager.enable = true;
   networking.networkmanager.settings = {
     connection = {
