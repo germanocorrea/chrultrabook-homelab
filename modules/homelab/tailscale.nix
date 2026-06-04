@@ -34,7 +34,7 @@ in
         "github.com/caddy-dns/cloudflare@v0.2.4"
         "github.com/mholt/caddy-webdav@v0.0.0-20260127042217-fa2f366b0d75"
       ];
-      hash = "sha256-J0HWjCPoOoARAxDpG2bS9c0x5Wv4Q23qWZbTjd8nW84=";
+      hash = "sha256-3dA4c/nnbLaOpcaAlf0e7QvjXXgUhJbxZE6flcJHgR8=";
     };
 
     virtualHosts = {
