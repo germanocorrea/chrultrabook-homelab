@@ -46,6 +46,15 @@ in
       "wallabag.gege.xyz.br" = (virtualHostConfig "8181");
       "archiveteam-warrior.gege.xyz.br" = (virtualHostConfig "8001");
       "sync.gege.xyz.br" = (virtualHostConfig "8384");
+      "public.gege.xyz.br" = {
+        extraConfig = ''
+          tls {
+            dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+          }
+          root /mnt/Storage/org/public
+          file_server browse
+        '';
+      };
     };
   };
 
