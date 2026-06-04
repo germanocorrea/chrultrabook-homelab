@@ -30,7 +30,10 @@ in
     enable = true;
     # Usamos o pacote com suporte a DNS Cloudflare
     package = pkgs.caddy.withPlugins {
-      plugins = [ "github.com/caddy-dns/cloudflare@v0.2.4" ];
+      plugins = [
+        "github.com/caddy-dns/cloudflare@v0.2.4"
+        "github.com/mholt/caddy-webdav@v0.0.0-20260127042217-fa2f366b0d75"
+      ];
       hash = "sha256-J0HWjCPoOoARAxDpG2bS9c0x5Wv4Q23qWZbTjd8nW84=";
     };
 
