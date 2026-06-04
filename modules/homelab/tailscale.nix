@@ -4,6 +4,7 @@ let
     extraConfig = ''
       tls {
         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1 8.8.8.8
       }
       reverse_proxy 127.0.0.1:${port}
     '';
@@ -50,6 +51,7 @@ in
         extraConfig = ''
           tls {
             dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+            resolvers 1.1.1.1 8.8.8.8
           }
           root /mnt/Storage/org/public
           file_server browse
