@@ -19,7 +19,7 @@ in
     emacs
   ];
 
-  services.emacs.enable = true
+  services.emacs.enable = true;
 
   system.activationScripts.doomSync = {
     text = ''
