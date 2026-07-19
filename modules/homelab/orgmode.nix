@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, doomConfigDir, ... }:
+let
+  user = "gege";
+  doomConfigDir = self + "/doom.d";
+in
 {
     services.syncthing = {
       enable = true;
@@ -15,4 +19,28 @@
     syncthing
     emacs
   ];
+
+  system.activationScripts.doomSync = {
+    text = ''
+      su - ${toString user} -c '
+        set -e
+
+        if [ ! -d /home/${toString user}/.config/emacs ]; then
+          ${pkgs.git}/bin/git clone --depth 1 https://github.com/doomemacs/doomemacs \
+            /home/${toString user}/.config/emacs
+        fi
+
+        mkdir -p /home/${toString user}/.config/doom
+        cp -rL --no-preserve=mode ${toString doomConfigDir}/. /home/${toString user}/.config/doom/
+        chmod -R u+w /home/${toString user}/.config/doom
+
+        if [ ! -d /home/${toString user}/.config/emacs/.local ]; then
+          /home/${toString user}/.config/emacs/bin/doom install --force
+        else
+          /home/${toString user}/.config/emacs/bin/doom sync
+        fi
+      '
+    '';
+    deps = [];
+  };
 }
