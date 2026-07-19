@@ -1,7 +1,6 @@
 { config, pkgs, doomConfigDir, ... }:
 let
   user = "gege";
-  doomConfigDir = self + "/doom.d";
 in
 {
     services.syncthing = {
@@ -20,9 +19,11 @@ in
     emacs
   ];
 
+  services.emacs.enable = true
+
   system.activationScripts.doomSync = {
     text = ''
-      su - ${toString user} -c '
+      ${pkgs.util-linux}/bin/runuser - ${toString user} -c '
         set -e
 
         if [ ! -d /home/${toString user}/.config/emacs ]; then

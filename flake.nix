@@ -20,6 +20,7 @@
       nixosConfigurations = {
         chrultrabook-homelab = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { doomConfigDir = self + "/doom.d"; };
           modules = [
             ./hosts/chrultrabook-homelab/configuration.nix
             ./modules/homelab/default-configuration.nix
@@ -28,6 +29,7 @@
         };
         vm-homelab = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { doomConfigDir = self + "/doom.d"; };
           modules = [
             ./hosts/vm-homelab/configuration.nix
             ./modules/homelab/default-configuration.nix
