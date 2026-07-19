@@ -122,3 +122,18 @@
 ;;   (setq ispell-local-dictionary "pt_BR,en_US")
 ;;   (add-to-list 'ispell-local-dictionary-alist
 ;;                '("pt_BR,en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "pt_BR,en_US") nil utf-8)))
+
+(use-package! websocket
+  :after org-roam)
+
+(use-package! org-roam-ui
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))

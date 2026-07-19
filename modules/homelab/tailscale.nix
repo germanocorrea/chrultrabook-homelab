@@ -50,6 +50,7 @@ in
       "wallabag.gege.xyz.br" = (virtualHostConfig "8181");
       "archiveteam-warrior.gege.xyz.br" = (virtualHostConfig "8001");
       "sync.gege.xyz.br" = (virtualHostConfig "8384");
+      "roam.gege.xyz.br" = (virtualHostConfig "35901");
       "public.gege.xyz.br" = {
         extraConfig = ''
           tls {
