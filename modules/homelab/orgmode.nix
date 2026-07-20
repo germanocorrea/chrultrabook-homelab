@@ -43,7 +43,7 @@ lib.mkMerge [
       ripgrep
       fd
       symbola
-      python
+      python3
     ];
 
     fonts.packages = with pkgs; [
