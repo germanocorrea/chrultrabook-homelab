@@ -43,6 +43,7 @@ lib.mkMerge [
       ripgrep
       fd
       symbola
+      python
     ];
 
     fonts.packages = with pkgs; [
@@ -71,6 +72,10 @@ lib.mkMerge [
             /home/${user}/.config/emacs/bin/doom sync
           fi
         '
+
+         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'XDG_RUNTIME_DIR=/run/user/$(id -u ${user}) systemctl --user restart emacs.service'
+
+         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'emacsclient --eval "(org-roam-ui-mode)" '
       '';
       deps = [];
     };
