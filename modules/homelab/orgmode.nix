@@ -40,6 +40,13 @@ lib.mkMerge [
     environment.systemPackages = with pkgs; [
       syncthing
       emacs
+      ripgrep
+      fd
+      symbola
+    ];
+
+    fonts.packages = with pkgs; [
+      symbola
     ];
 
     services.emacs.enable = true;
