@@ -96,4 +96,9 @@ lib.mkMerge [
     { slug = "org-roam-sync"; command = "org-roam-db-sync"; }
     { slug = "org-calendar-sync"; command = "org-icalendar-combine-agenda-files"; }
   ]))
+
+  # required because doom-org-async-export don't cleanup after itself...
+  systemd.tmpfiles.rules = [
+    "e /tmp/doom-org-async-export* 0 - - 30m"
+  ];
 ]

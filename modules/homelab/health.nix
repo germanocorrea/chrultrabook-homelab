@@ -57,6 +57,29 @@
     };
   };
 
+  systemd.timers."cleanup-logs-space" = {
+    wantedBy = ["timers.target"];
+    timerConf = {
+      OnBootSec = "2h";
+      OnUnitActiveSec = "2h";
+      Unit = "cleanup-logs-space.service";
+    };
+  };
+
+  systemd.services."cleanup-logs-space" = {
+    script = "journalctl --vacuum-size=200M";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    }
+  };
+
+  systemd.timers."systemd-tmpfiles-clean" = {
+    timerConfig = {
+        OnUnitActiveSec = "30min";
+    };
+  };
+
   # systemd.timers."storage-tester" = {
   #   wantedBy = [ "timers.target" ];
   #   timerConfig = {
