@@ -71,7 +71,7 @@
     serviceConfig = {
       Type = "oneshot";
       User = "root";
-    }
+    };
   };
 
   systemd.timers."systemd-tmpfiles-clean" = {
