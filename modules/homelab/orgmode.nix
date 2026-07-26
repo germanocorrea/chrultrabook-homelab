@@ -30,8 +30,19 @@ lib.mkMerge [
       enable = true;
       openDefaultPorts = true;
       guiAddress = "127.0.0.1:8384";
-      settings.gui = {
-        insecureSkipHostcheck = true;
+      devices = {
+        "phone" = { id = config.sops.placeholder."homelab/syncthing/phone"; };
+        "laptop" = { id = config.sops.placeholder."homelab/syncthing/laptop"; };
+      };
+      settings = {
+        gui.insecureSkipHostcheck = true;
+        folders = {
+          "Org" = {
+            path = "/mnt/Storage/org";
+            devices = [ "phone" "laptop" ];
+            ignorePerms = true;
+          };
+        };
       };
     };
 
@@ -58,7 +69,7 @@ lib.mkMerge [
           set -e
 
           if [ ! -d /home/${user}/.config/emacs ]; then
-            ${pkgs.git}/bin/git clone --depth 1 https://github.com/doomemacs/doomemacs \
+            $pacman -Sc{pkgs.git}/bin/git clone --depth 1 https://github.com/doomemacs/doomemacs \
               /home/${user}/.config/emacs
           fi
 
@@ -75,7 +86,7 @@ lib.mkMerge [
 
          ${pkgs.util-linux}/bin/runuser -l ${user} -c 'XDG_RUNTIME_DIR=/run/user/$(id -u ${user}) systemctl --user restart emacs.service'
 
-         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'emacsclient --eval "(org-roam-ui-mode)" '
+         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'emacsclient --eval "(progn (org-roam-ui-mode -1) (org-roam-ui-mode 1))" '
       '';
       deps = [];
     };
