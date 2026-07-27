@@ -289,6 +289,7 @@ in
     #   0
     #   143
     # ];
-    systemd.services.podman-brokerbot.serviceConfig.EnvironmentFile = config.sops.templates."brokerbot.env".path;
+    systemd.services.podman-brokerbot.serviceConfig.EnvironmentFile =
+      config.sops.templates."brokerbot.env".path;
   };
 }

@@ -1,4 +1,10 @@
-{ config, lib, pkgs, doomConfigDir, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  doomConfigDir,
+  ...
+}:
 let
   user = "gege";
 
@@ -77,20 +83,27 @@ lib.mkMerge [
 
          ${pkgs.util-linux}/bin/runuser -l ${user} -c 'XDG_RUNTIME_DIR=/run/user/$(id -u ${user}) systemctl --user restart emacs.service && until [ -S /run/user/$(id -u ${user})/emacs/server ]; do ${pkgs.coreutils}/bin/sleep 1; done'
       '';
-      deps = [];
+      deps = [ ];
     };
   }
 
   # required because doom-org-async-export don't cleanup after itself...
   {
     systemd.tmpfiles.rules = [
-        "e /tmp/doom-org-async-export* 0 - - 30m"
+      "e /tmp/doom-org-async-export* 0 - - 30m"
     ];
   }
 
-
-  (lib.mkMerge (map timerBasedAction [
-    { slug = "org-roam-sync"; command = "org-roam-db-sync"; }
-    { slug = "org-calendar-sync"; command = "org-icalendar-combine-agenda-files"; }
-  ]))
+  (lib.mkMerge (
+    map timerBasedAction [
+      {
+        slug = "org-roam-sync";
+        command = "org-roam-db-sync";
+      }
+      {
+        slug = "org-calendar-sync";
+        command = "org-icalendar-combine-agenda-files";
+      }
+    ]
+  ))
 ]

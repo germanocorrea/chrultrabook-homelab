@@ -10,7 +10,11 @@
   };
 
   outputs =
-    { self, nixpkgs, sops-nix }:
+    {
+      self,
+      nixpkgs,
+      sops-nix,
+    }:
     {
 
       packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
@@ -20,7 +24,9 @@
       nixosConfigurations = {
         chrultrabook-homelab = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { doomConfigDir = self + "/doom.d"; };
+          specialArgs = {
+            doomConfigDir = self + "/doom.d";
+          };
           modules = [
             ./hosts/chrultrabook-homelab/configuration.nix
             ./modules/homelab/default-configuration.nix
@@ -29,7 +35,9 @@
         };
         vm-homelab = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { doomConfigDir = self + "/doom.d"; };
+          specialArgs = {
+            doomConfigDir = self + "/doom.d";
+          };
           modules = [
             ./hosts/vm-homelab/configuration.nix
             ./modules/homelab/default-configuration.nix

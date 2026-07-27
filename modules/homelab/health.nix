@@ -58,7 +58,7 @@
   # };
 
   systemd.timers."cleanup-logs-space" = {
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       OnBootSec = "2h";
       OnUnitActiveSec = "2h";
@@ -76,7 +76,7 @@
 
   systemd.timers."systemd-tmpfiles-clean" = {
     timerConfig = {
-        OnUnitActiveSec = "30min";
+      OnUnitActiveSec = "30min";
     };
   };
 
