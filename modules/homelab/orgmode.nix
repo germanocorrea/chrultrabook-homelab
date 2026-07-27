@@ -30,19 +30,10 @@ lib.mkMerge [
       enable = true;
       openDefaultPorts = true;
       guiAddress = "127.0.0.1:8384";
+      overrideDevices = false;
+      overrideFolders = false;
       settings = {
         gui.insecureSkipHostcheck = true;
-        devices = {
-          "phone" = { id = config.sops.placeholder."homelab/syncthing/phone"; };
-          "laptop" = { id = config.sops.placeholder."homelab/syncthing/laptop"; };
-        };
-        folders = {
-          "Org" = {
-            path = "/mnt/Storage/org";
-            devices = [ "phone" "laptop" ];
-            ignorePerms = true;
-          };
-        };
       };
     };
 

@@ -14,8 +14,7 @@
       "homelab/tokens/telegram" = { };
       "homelab/passwords/brokerbot_password" = { };
       "homelab/passwords/brokerbot_webhook_secret" = { };
-      "homelab/syncthing/phone" = { };
-      "homelab/syncthing/laptop" = { };
+
     };
 
     templates."brokerbot.env" = {
