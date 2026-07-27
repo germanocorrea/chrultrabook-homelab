@@ -69,7 +69,7 @@ lib.mkMerge [
           set -e
 
           if [ ! -d /home/${user}/.config/emacs ]; then
-            $pacman -Sc{pkgs.git}/bin/git clone --depth 1 https://github.com/doomemacs/doomemacs \
+            ${pkgs.git}/bin/git clone --depth 1 https://github.com/doomemacs/doomemacs \
               /home/${user}/.config/emacs
           fi
 
@@ -86,7 +86,7 @@ lib.mkMerge [
 
          ${pkgs.util-linux}/bin/runuser -l ${user} -c 'XDG_RUNTIME_DIR=/run/user/$(id -u ${user}) systemctl --user restart emacs.service'
 
-         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'emacsclient --eval "(progn (org-roam-ui-mode -1) (org-roam-ui-mode 1))" '
+         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'while [ ! -S /run/user/$(id -u ${user})/emacs/server ]; do ${pkgs.coreutils}/bin/sleep 1; done && emacsclient --eval "(progn (org-roam-ui-mode -1) (org-roam-ui-mode 1))" '
       '';
       deps = [];
     };
