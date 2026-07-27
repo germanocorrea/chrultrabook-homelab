@@ -21,41 +21,41 @@
   #   };
   # };
 
-  systemd.timers."power-tester" = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "5m";
-      OnUnitActiveSec = "5m";
-      Unit = "power-tester.service";
-    };
-  };
+  # systemd.timers."power-tester" = {
+  #   wantedBy = [ "timers.target" ];
+  #   timerConfig = {
+  #     OnBootSec = "5m";
+  #     OnUnitActiveSec = "5m";
+  #     Unit = "power-tester.service";
+  #   };
+  # };
 
-  systemd.services."power-tester" = {
-    script = ''
-      PERSISTED_FILE="$HOME/.power-tester-state"
-      CURRENT_STATE=$(cat /sys/class/power_supply/AC/online)
-      if [[ -f $PERSISTED_FILE ]]; then
-          PERSISTED_STATE=$(cat $PERSISTED_FILE)
-      else
-          PERSISTED_STATE=-1
-      fi
+  # systemd.services."power-tester" = {
+  #   script = ''
+  #     PERSISTED_FILE="$HOME/.power-tester-state"
+  #     CURRENT_STATE=$(cat /sys/class/power_supply/AC/online)
+  #     if [[ -f $PERSISTED_FILE ]]; then
+  #         PERSISTED_STATE=$(cat $PERSISTED_FILE)
+  #     else
+  #         PERSISTED_STATE=-1
+  #     fi
 
-      if [[ $CURRENT_STATE -eq 0 ]]; then
-          MESSAGE="disconnected"
-      else
-          MESSAGE="connected"
-      fi
+  #     if [[ $CURRENT_STATE -eq 0 ]]; then
+  #         MESSAGE="disconnected"
+  #     else
+  #         MESSAGE="connected"
+  #     fi
 
-      if [[ $PERSISTED_STATE -ne $CURRENT_STATE ]]; then
-          echo "Power AC state changed: $MESSAGE" | nc -U /tmp/brokerbot/brokerbot.sock
-          echo $CURRENT_STATE > $PERSISTED_FILE
-      fi
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-  };
+  #     if [[ $PERSISTED_STATE -ne $CURRENT_STATE ]]; then
+  #         echo "Power AC state changed: $MESSAGE" | nc -U /tmp/brokerbot/brokerbot.sock
+  #         echo $CURRENT_STATE > $PERSISTED_FILE
+  #     fi
+  #   '';
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = "root";
+  #   };
+  # };
 
   systemd.timers."cleanup-logs-space" = {
     wantedBy = ["timers.target"];
