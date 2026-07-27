@@ -59,7 +59,7 @@
 
   systemd.timers."cleanup-logs-space" = {
     wantedBy = ["timers.target"];
-    timerConf = {
+    timerConfig = {
       OnBootSec = "2h";
       OnUnitActiveSec = "2h";
       Unit = "cleanup-logs-space.service";

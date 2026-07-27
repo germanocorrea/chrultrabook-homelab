@@ -30,12 +30,12 @@ lib.mkMerge [
       enable = true;
       openDefaultPorts = true;
       guiAddress = "127.0.0.1:8384";
-      devices = {
-        "phone" = { id = config.sops.placeholder."homelab/syncthing/phone"; };
-        "laptop" = { id = config.sops.placeholder."homelab/syncthing/laptop"; };
-      };
       settings = {
         gui.insecureSkipHostcheck = true;
+        devices = {
+          "phone" = { id = config.sops.placeholder."homelab/syncthing/phone"; };
+          "laptop" = { id = config.sops.placeholder."homelab/syncthing/laptop"; };
+        };
         folders = {
           "Org" = {
             path = "/mnt/Storage/org";
@@ -92,13 +92,16 @@ lib.mkMerge [
     };
   }
 
+  # required because doom-org-async-export don't cleanup after itself...
+  {
+    systemd.tmpfiles.rules = [
+        "e /tmp/doom-org-async-export* 0 - - 30m"
+    ];
+  }
+
+
   (lib.mkMerge (map timerBasedAction [
     { slug = "org-roam-sync"; command = "org-roam-db-sync"; }
     { slug = "org-calendar-sync"; command = "org-icalendar-combine-agenda-files"; }
   ]))
-
-  # required because doom-org-async-export don't cleanup after itself...
-  systemd.tmpfiles.rules = [
-    "e /tmp/doom-org-async-export* 0 - - 30m"
-  ];
 ]
