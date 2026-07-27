@@ -84,9 +84,7 @@ lib.mkMerge [
           fi
         '
 
-         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'XDG_RUNTIME_DIR=/run/user/$(id -u ${user}) systemctl --user restart emacs.service'
-
-         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'while [ ! -S /run/user/$(id -u ${user})/emacs/server ]; do ${pkgs.coreutils}/bin/sleep 1; done && emacsclient --eval "(progn (org-roam-ui-mode -1) (org-roam-ui-mode 1))" '
+         ${pkgs.util-linux}/bin/runuser -l ${user} -c 'XDG_RUNTIME_DIR=/run/user/$(id -u ${user}) systemctl --user restart emacs.service && until [ -S /run/user/$(id -u ${user})/emacs/server ]; do ${pkgs.coreutils}/bin/sleep 1; done'
       '';
       deps = [];
     };
