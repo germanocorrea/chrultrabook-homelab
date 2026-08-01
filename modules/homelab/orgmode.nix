@@ -15,7 +15,7 @@ let
       wants = [ "emacs.service" ];
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = "${pkgs.emacs}/bin/emacsclient --eval '(${parameters.command})'";
+        ExecStart = "${pkgs.emacs}/bin/emacsclient --eval '(${parameters.command}); find /tmp -maxdepth 1 -name 'doom-org-async-export*' -delete '";
       };
     };
 
