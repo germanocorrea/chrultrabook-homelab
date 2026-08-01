@@ -102,6 +102,10 @@
       "relatime"
     ];
   };
+
+  systemd.tmpfiles.rules = [
+    "z /mnt/Storage 0755 gege users - -"
+  ];
   services.homelab = {
     storage = "/mnt/Storage";
   };
