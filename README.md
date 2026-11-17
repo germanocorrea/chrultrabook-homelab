@@ -38,22 +38,3 @@ To manage secrets (tokens such as Cloudflare's), I use [SOPS](https://github.com
 Since CELES has very limited storage capacity, I require using external storage for basically everything. The only data that still lives on the eMMC is the NixOS configuration itself and everything in `/nix/store`. This means I need to be really careful when doing a full update and making sure old files are properly cleaned up.
 
 Besides this, each host defines a default "storage" directory in `config.services.homelab.storage`, and each service uses it as needed. For example, all bind mounts happen inside this directory, podman graphroot is set to a directory inside it, and so on. The actual server mounts an external SSD at `/mnt/Storage` and sets this option to it, but vm-homelab defines it inside the home folder.
-
-## Services
-
-Right now, this homelab is just a media lab. It is running:
-- Jellyfin media server
-- Jellyseerr
-- qBittorrent
-- arr* stack
-  - Radarr
-  - Sonarr
-  - Bazarr
-  - Prowlarr
-  - FlareSolverr
-
-Currently disabled services:
-- [brokerbot](https://github.com/germanocorrea/brokerbot): a Telegram bot that sends messages through UNIX sockets
-- [archiveteam-warrior](https://github.com/ArchiveTeam/warrior-dockerfile)
-- [wallabag](https://github.com/wallabag/wallabag)
-- some generic health services (network connectivity, power, disk usage, etc)
